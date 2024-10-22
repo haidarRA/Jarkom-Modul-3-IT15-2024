@@ -87,3 +87,154 @@ service bind9 restart
 ```
 Setelah menjalankan script di atas, kedua domain dapat dites dengan ping dari node lain.
 ![image](https://github.com/user-attachments/assets/a6b29c51-15b8-41bb-94a0-d47401c4061e)
+
+# No. 1
+Soal:
+> Lakukan konfigurasi sesuai dengan peta yang sudah diberikan. Semua Client harus menggunakan konfigurasi ip address dari keluarga Tybur (dhcp).
+
+Network configuration tiap node:
+# Router / DHCP Relay
+## 1. Paradis
+```
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1 #Marley
+iface eth1 inet static
+    address 10.71.1.1
+    netmask 255.255.255.0
+
+auto eth2 #Eldia
+iface eth2 inet static
+    address 10.71.2.1
+    netmask 255.255.255.0
+
+auto eth3 #Kyojin
+iface eth3 inet static
+    address 10.71.3.1
+    netmask 255.255.255.0
+
+auto eth4 #Noble
+iface eth4 inet static
+    address 10.71.4.1
+    netmask 255.255.255.0
+```
+
+# Laravel Worker
+## 1. Annie
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.1.2
+    netmask 255.255.255.0
+    gateway 10.71.1.1
+```
+
+## 2. Bertholdt
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.1.3
+    netmask 255.255.255.0
+    gateway 10.71.1.1
+```
+
+## 3. Reiner
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.1.4
+    netmask 255.255.255.0
+    gateway 10.71.1.1
+```
+
+# PHP Worker
+## 1. Armin
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.2.2
+    netmask 255.255.255.0
+    gateway 10.71.2.1
+```
+
+## 2. Eren
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.2.3
+    netmask 255.255.255.0
+    gateway 10.71.2.1
+```
+
+## 3. Mikasa
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.2.4
+    netmask 255.255.255.0
+    gateway 10.71.2.1
+```
+
+# Client
+## 1. Zeke
+```
+auto eth0
+iface eth0 inet dhcp
+```
+
+## 2. Erwin
+```
+auto eth0
+iface eth0 inet dhcp
+```
+
+# Load Balancer (Laravel)
+## 1. Beast
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.3.2
+    netmask 255.255.255.0
+    gateway 10.71.3.1
+```
+
+# Load Balancer (PHP)
+## 1. Colossal
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.3.3
+    netmask 255.255.255.0
+    gateway 10.71.3.1
+```
+
+# Database Server
+## 1. Warhammer
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.3.4
+    netmask 255.255.255.0
+    gateway 10.71.3.1
+```
+
+# DNS Server
+## 1. Fritz
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.4.2
+    netmask 255.255.255.0
+    gateway 10.71.4.1
+```
+
+# DHCP Server
+## 1. Tybur
+```
+auto eth0
+iface eth0 inet static
+    address 10.71.4.3
+    netmask 255.255.255.0
+    gateway 10.71.4.1
+```
