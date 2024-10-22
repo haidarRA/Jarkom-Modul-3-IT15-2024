@@ -10,21 +10,21 @@
 ![image](https://github.com/user-attachments/assets/a086aec0-4163-4c8f-ba12-7a9d6dbca5c3)
 
 ## IP Address Tiap Node
-| Node           | IP Address         |
-|----------------|--------------------|
-| Paradis        | 192.168.122.1/24   |
-| Annie          | 10.71.1.2          |
-| Bertholdt      | 10.71.1.3          |
-| Reiner         | 10.71.1.4          |
-| Armin          | 10.71.2.2          |
-| Eren           | 10.71.2.3          |
-| Mikasa         | 10.71.2.4          |
-| Zeke           | DHCP               |
-| Erwin          | DHCP               |
-| Beast          | 10.71.3.2          |
-| Colossal       | 10.71.3.3          |
-| Warhammer      | 10.71.3.4          |
-| Fritz          | 10.71.4.2          |
-| Tybur          | 10.71.4.3          |
+| Node           | Jenis Node              | IP Address         |
+|----------------|-------------------------|--------------------|
+| Paradis        | Router (DHCP Relay)     | 192.168.122.1/24   |
+| Annie          | Laravel Worker          | 10.71.1.2          |
+| Bertholdt      | Laravel Worker          | 10.71.1.3          |
+| Reiner         | Laravel Worker          | 10.71.1.4          |
+| Armin          | PHP Worker              | 10.71.2.2          |
+| Eren           | PHP Worker              | 10.71.2.3          |
+| Mikasa         | PHP Worker              | 10.71.2.4          |
+| Zeke           | Client                  | DHCP               |
+| Erwin          | Client                  | DHCP               |
+| Beast          | Load Balancer (Laravel) | 10.71.3.2          |
+| Colossal       | Load Balancer (PHP)     | 10.71.3.3          |
+| Warhammer      | Database Server         | 10.71.3.4          |
+| Fritz          | DNS Server              | 10.71.4.2          |
+| Tybur          | DHCP Server             | 10.71.4.3          |
 
 Semua node menggunakan netmask 255.255.255.0.
