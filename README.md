@@ -34,3 +34,56 @@ Soal:
 > Pulau Paradis telah menjadi tempat yang damai selama 1000 tahun, namun kedamaian tersebut tidak bertahan selamanya. Perang antara kaum Marley dan Eldia telah mencapai puncak. Kaum Marley yang dipimpin oleh Zeke, me-register domain name marley.yyy.com untuk worker Laravel mengarah pada Annie. Namun ternyata tidak hanya kaum Marley saja yang berinisiasi, kaum Eldia ternyata sudah mendaftarkan domain name eldia.yyy.com untuk worker PHP (0) mengarah pada Armin.
 
 Jalankan script berikut pada DNS Server Fritz.
+```
+apt-get update
+apt-get install bind9 -y
+
+echo 'zone "marley.it15.com" {
+	type master;
+	file "/etc/bind/jarkom/marley.it15.com";
+};
+zone "eldia.it15.com" {
+	type master;
+	file "/etc/bind/jarkom/eldia.it15.com";
+};' >> /etc/bind/named.conf.local
+
+mkdir /etc/bind/jarkom
+cp /etc/bind/db.local /etc/bind/jarkom/marley.it15.com
+cp /etc/bind/db.local /etc/bind/jarkom/eldia.it15.com
+
+echo ';
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     marley.it15.com. root.marley.it15.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      marley.it15.com.
+@       IN      A       10.71.1.2
+www     IN      CNAME   marley.it15.com.
+@       IN      AAAA    ::1' > /etc/bind/jarkom/marley.it15.com
+
+echo ';
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     eldia.it15.com. root.eldia.it15.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      eldia.it15.com.
+@       IN      A       10.71.2.2
+www     IN      CNAME   eldia.it15.com.
+@       IN      AAAA    ::1' > /etc/bind/jarkom/eldia.it15.com
+
+service bind9 restart
+```
+Setelah menjalankan script di atas, kedua domain dapat dites dengan ping dari node lain.
+![image](https://github.com/user-attachments/assets/a6b29c51-15b8-41bb-94a0-d47401c4061e)
