@@ -238,3 +238,91 @@ iface eth0 inet static
     netmask 255.255.255.0
     gateway 10.71.4.1
 ```
+
+# No. 2 - 5
+Soal:
+> Client yang melalui bangsa marley mendapatkan range IP dari [prefix IP].1.05 - [prefix IP].1.25 dan [prefix IP].1.50 - [prefix IP].1.100 (2)
+
+>Client yang melalui bangsa eldia mendapatkan range IP dari [prefix IP].2.09 - [prefix IP].2.27 dan [prefix IP].2 .81 - [prefix IP].2.243 (3)
+
+>Client mendapatkan DNS dari keluarga Fritz dan dapat terhubung dengan internet melalui DNS tersebut (4)
+
+>Dikarenakan keluarga Tybur tidak menyukai kaum eldia, maka mereka hanya meminjamkan ip address ke kaum eldia selama 6 menit. Namun untuk kaum marley, keluarga Tybur meminjamkan ip address selama 30 menit. Waktu maksimal dialokasikan untuk peminjaman alamat IP selama 87 menit. (5)
+
+
+Jalankan script berikut pada DHCP Relay Paradis.
+```
+apt-get update
+apt-get install isc-dhcp-relay -y
+service isc-dhcp-relay start
+
+echo 'SERVERS="10.71.4.3"
+INTERFACES="eth1 eth2 eth3 eth4"
+OPTIONS=' > /etc/default/isc-dhcp-relay
+
+service isc-dhcp-relay restart
+```
+ 
+ 
+Kemudian, jalankan script berikut pada DHCP Server Tybur.
+```
+apt-get update
+apt-get install isc-dhcp-server
+
+echo 'INTERFACESv4="eth0"' > /etc/default/isc-dhcp-server
+
+echo 'subnet 10.71.1.0 netmask 255.255.255.0 {
+    range 10.71.1.5 10.71.1.25;
+    range 10.71.1.50 10.71.1.100;
+    option routers 10.71.1.1;
+    option broadcast-address 10.71.1.255;
+    option domain-name-servers 10.71.4.2;
+    default-lease-time 1800;
+    max-lease-time 5220;
+}
+
+subnet 10.71.2.0 netmask 255.255.255.0 {
+    range 10.71.2.9 10.71.2.27;
+    range 10.71.2.81 10.71.2.243;
+    option routers 10.71.2.1;
+    option broadcast-address 10.71.2.255;
+    option domain-name-servers 10.71.4.2;
+    default-lease-time 360;
+    max-lease-time 5220;
+}
+
+subnet 10.71.4.0 netmask 255.255.255.0 {
+}' > /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server restart
+```
+ 
+ 
+Kemudian, jalankan script berikut pada DNS Server Fritz.
+```
+echo 'options {
+        directory "/var/cache/bind";
+
+        forwarders {
+            192.168.122.1;
+        };
+
+        allow-query{any;};
+
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};' > /etc/bind/named.conf.options
+
+service bind9 restart
+```
+
+Setelah melakukan konfigurasi pada DHCP Relay Paradis, DHCP Server Tybur, dan DNS Server Fritz, langsung dapat dites konfigurasinya apakah bisa berjalan atau tidak dengan mengecek IP dari masing - masing client dan mencoba untuk mengakses internet dari kedua client.
+![image](https://github.com/user-attachments/assets/24689773-576f-41fa-bdb3-5678a1e6b007)
+![image](https://github.com/user-attachments/assets/b44cfaad-8e63-4a96-9657-85523c9ff902)
+
+Dari kedua gambar di atas, dapat dilihat bahwa client Zeke mendapatkan IP address 10.71.1.5 dan client Erwin mendapatkan IP address 10.71.2.9.
+
+![image](https://github.com/user-attachments/assets/162d11ea-a960-44f6-86f6-1c5741d305c8)
+![image](https://github.com/user-attachments/assets/141fbc84-12f6-40d6-974e-814d1861e140)
+
+Dari kedua gambar di atas, dapat dilihat bahwa kedua client dapat mengakses internet melalui DNS Server Tybur.
