@@ -326,3 +326,62 @@ Dari kedua gambar di atas, dapat dilihat bahwa client Zeke mendapatkan IP addres
 ![image](https://github.com/user-attachments/assets/141fbc84-12f6-40d6-974e-814d1861e140)
 
 Dari kedua gambar di atas, dapat dilihat bahwa kedua client dapat mengakses internet melalui DNS Server Tybur.
+
+# No. 6
+Soal:
+> Armin berinisiasi untuk memerintahkan setiap worker PHP untuk melakukan konfigurasi virtual host untuk website berikut https://intip.in/BangsaEldia dengan menggunakan php 7.3 (6)
+
+Jalankan script berikut pada setiap worker PHP (Armin, Eren, dan Mikasa).
+```
+apt-get update
+apt-get install php7.3-fpm php7.3-common php7.3-mysql php7.3-gmp php7.3-curl php7.3-intl php7.3-mbstring php7.3-xmlrpc php7.3-gd php7.3-xml php7.3-cli php7.3-zip -y
+apt-get install nginx -y
+apt-get install wget -y
+
+service nginx start
+service php7.3-fpm start
+
+mkdir -p /var/www/eldia.it15.com
+mkdir /var/www/eldia.it15.com/css
+mkdir /var/www/eldia.it15.com/js
+
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1Z36ci3i-k-sHjyFUnTzx98pVcdkO-SpS' -O /var/www/eldia.it15.com/index.php
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1G4yZZzFKjLKeFt-dgVVKvmLUeVKylYpb' -O /var/www/eldia.it15.com/info.php
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=14qthc0e_7O4LVMq824Ww35bom3NIQ5FZ' -O /var/www/eldia.it15.com/css/styles.css
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=139dJixAsQaAiNfQOaGGQjqTZrFSZnSGl' -O /var/www/eldia.it15.com/js/script.js
+
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/eldia.it15.com
+ln -s /etc/nginx/sites-available/eldia.it15.com /etc/nginx/sites-enabled/eldia.it15.com
+rm /etc/nginx/sites-enabled/default
+
+echo 'server {
+    listen 80;
+    server_name _;
+
+    root /var/www/eldia.it15.com;
+    index index.php index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}' > /etc/nginx/sites-available/eldia.it15.com
+
+service nginx restart
+service php7.3-fpm restart
+```
+
+Setelah menjalankan script di atas pada masing - masing worker, dapat dites menggunakan Lynx dari salah satu client dengan menggunakan command ```lynx [IP Worker PHP]```.
+![image](https://github.com/user-attachments/assets/8a269076-bc66-408c-b8a7-80b301380a08)
+![image](https://github.com/user-attachments/assets/3bc4ea75-ef0b-419f-b726-f40ac23ebbe1)
+![image](https://github.com/user-attachments/assets/b1c5705f-d6f7-4019-a81b-34b508ecccec)
+
+# No. 7
+Soal:
+> Dikarenakan Armin sudah mendapatkan kekuatan titan colossal, maka bantulah kaum eldia menggunakan colossal agar dapat bekerja sama dengan baik. Kemudian lakukan testing dengan 6000 request dan 200 request/second. (7)
