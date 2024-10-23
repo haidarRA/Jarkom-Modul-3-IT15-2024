@@ -385,3 +385,84 @@ Setelah menjalankan script di atas pada masing - masing worker, dapat dites meng
 # No. 7
 Soal:
 > Dikarenakan Armin sudah mendapatkan kekuatan titan colossal, maka bantulah kaum eldia menggunakan colossal agar dapat bekerja sama dengan baik. Kemudian lakukan testing dengan 6000 request dan 200 request/second. (7)
+
+Jalankan script berikut di DNS Server Fritz untuk mengubah IP dari domain eldia.it15.com.
+```
+echo ';
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     eldia.it15.com. root.eldia.it15.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      eldia.it15.com.
+@       IN      A       10.71.3.3
+www     IN      CNAME   eldia.it15.com.
+@       IN      AAAA    ::1' > /etc/bind/jarkom/eldia.it15.com
+```
+
+Kemudian, jalankan script berikut di load balancer PHP Colossal untuk setup load balancer untuk setiap PHP worker.
+```
+apt-get update
+apt-get install apache2-utils -y
+apt-get install nginx -y
+
+service nginx start
+
+mkdir -p /var/www/eldia.it15.com
+
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/eldia.it15.com
+
+echo 'upstream node {
+    server 10.71.2.2;
+    server 10.71.2.3;
+    server 10.71.2.4;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    root /var/www/eldia.it15.com;
+    index index.php index.html index.htm;
+
+    location / {
+        proxy_pass http://node;
+    }
+}' > /etc/nginx/sites-available/eldia.it15.com
+
+ln -s /etc/nginx/sites-available/eldia.it15.com /etc/nginx/sites-enabled/eldia.it15.com
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+
+Setelah menjalankan kedua script di atas, dapat langsung dites dengan mengakses IP load balancer Colossal (10.71.3.3) maupun domain eldia.it15.com di salah satu client dengan menggunakan Lynx.
+![image](https://github.com/user-attachments/assets/30f348fb-1172-4344-8709-83721115e6db)
+![image](https://github.com/user-attachments/assets/a818212a-e43b-41be-a571-94f840e8bde4)
+![image](https://github.com/user-attachments/assets/de6547b0-5f94-43ff-8b77-591742a9aa1a)
+
+Karena load balancer Colossal sudah berjalan dengan baik, maka untuk selanjutnya adalah melakukan load testing pada load balancer Colossal.
+Sebelum melakukan load testing, install apache2-utils terlebih dahulu.
+```
+apt install apache2-utils
+```
+
+Setelah itu, bisa dilakukan load testing dengan command ```ab -n 6000 -c 200 http://10.71.3.3/```
+![image](https://github.com/user-attachments/assets/d2e667d6-87bf-4884-8f78-b4f0f162b9a7)
+
+# No. 8
+Soal:
+> Karena Erwin meminta “laporan kerja Armin”, maka dari itu buatlah analisis hasil testing dengan 1000 request dan 75 request/second untuk masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
+>
+> a. Nama Algoritma Load Balancer
+>
+> b. Report hasil testing pada Apache Benchmark
+>
+> c. Grafik request per second untuk masing masing algoritma.
+>
+> d. Analisis (8)
