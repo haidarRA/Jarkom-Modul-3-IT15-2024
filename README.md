@@ -403,6 +403,8 @@ $TTL    604800
 @       IN      A       10.71.3.3
 www     IN      CNAME   eldia.it15.com.
 @       IN      AAAA    ::1' > /etc/bind/jarkom/eldia.it15.com
+
+service bind9 restart
 ```
 
 Kemudian, jalankan script berikut di load balancer PHP Colossal untuk setup load balancer untuk setiap PHP worker.
