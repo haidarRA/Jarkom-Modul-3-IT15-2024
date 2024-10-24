@@ -468,3 +468,24 @@ Soal:
 > c. Grafik request per second untuk masing masing algoritma.
 >
 > d. Analisis (8)
+
+Untuk mengetes Load Balancer Colossal, dapat menggunakan algoritma load balancing mulai dari Round Robin, Least Connection, IP Hash, sampai Generic Hash.
+![image](https://github.com/user-attachments/assets/a38702bf-4e48-4f3e-947d-7f0d64f4b876)
+
+Untuk load testingnya sendiri dapat menggunakan command ```ab -n 1000 -c 75 http://10.71.3.3/``` dari salah satu client.
+
+## 1. Round Robin
+![image](https://github.com/user-attachments/assets/8bc2e9b0-5a2e-4367-8d19-c302089941c2)
+
+## 2. Least Connection
+![image](https://github.com/user-attachments/assets/1a6b300d-f3de-451e-9e95-ef6631b35a8c)
+
+## 3. IP Hash
+![image](https://github.com/user-attachments/assets/5bbd3a0e-e2ff-4ea4-9ef4-5d2d67f4a35b)
+
+## 4. Generic Hash
+![image](https://github.com/user-attachments/assets/317ff309-e7df-4389-bc24-1fa1121a38d4)
+
+# No. 9
+Soal:
+> Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada “laporan kerja Armin”. (9)
