@@ -489,3 +489,21 @@ Untuk load testingnya sendiri dapat menggunakan command ```ab -n 1000 -c 75 http
 # No. 9
 Soal:
 > Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada “laporan kerja Armin”. (9)
+
+Sebelum load testing, jumlah worker pada load balancer Colossal diubah jumlahnya.
+![image](https://github.com/user-attachments/assets/871c4dc1-c36a-40a1-8d54-0f6d0acf49ec)
+
+Setelah mengubah jumlah worker pada load balancer, bisa dilakukan load testing dengan command ```ab -n 1000 -c 10 http://10.71.3.3/``` dari salah satu client.
+
+## 3 Worker
+![image](https://github.com/user-attachments/assets/95f70c2e-5806-4920-bb1d-72b852575b27)
+
+## 2 Worker
+![image](https://github.com/user-attachments/assets/3217d61e-d603-47f0-9d73-0a31e1750bed)
+
+## 1 Worker
+![image](https://github.com/user-attachments/assets/100e9202-071d-47f0-b50f-e2829820c8d4)
+
+# No. 10
+Soal:
+> Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di Colossal dengan dengan kombinasi username: “arminannie” dan password: “jrkmyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/ (10)
