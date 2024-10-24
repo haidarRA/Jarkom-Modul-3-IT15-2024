@@ -507,3 +507,38 @@ Setelah mengubah jumlah worker pada load balancer, bisa dilakukan load testing d
 # No. 10
 Soal:
 > Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di Colossal dengan dengan kombinasi username: “arminannie” dan password: “jrkmyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/ (10)
+
+Sebelum melakukan konfigurasi autentikasi di Load Balancer Colossal, ubah algoritma load balancing yang digunakan menjadi Round Robin dan ubah jumlah worker yang ada pada konfigurasi load balancer menjadi 3 terlebih dahulu.
+![image](https://github.com/user-attachments/assets/d7a1a239-7b64-4ef9-b568-58a77d800e75)
+
+Setelah itu, jalankan script ini di load balancer Colossal.
+```
+mkdir /etc/nginx/supersecret
+htpasswd -cb /etc/nginx/supersecret/htpasswd arminannie jrkmit15
+
+echo 'upstream node {
+    server 10.71.2.2;
+    server 10.71.2.3;
+    server 10.71.2.4;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+        proxy_pass http://node;
+
+        auth_basic "Restricted Content";
+        auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+    }
+}' > /etc/nginx/sites-available/eldia.it15.com
+
+service nginx restart
+```
+
+Setelah setup autentikasi pada load balancer Colossal, bisa mencoba untuk akses IP address 10.71.3.3 maupun domain eldia.it15.com dari salah satu client untuk menguji apakah autentikasi dapat bekerja dengan baik atau belum.
+![image](https://github.com/user-attachments/assets/5ed71818-e93d-4034-96af-828a47170414)
+![image](https://github.com/user-attachments/assets/f818a674-aba8-4d39-9736-e3e7dd64c9b7)
+![image](https://github.com/user-attachments/assets/30a112fa-5e17-4ca6-8245-398c7aec360f)
+![image](https://github.com/user-attachments/assets/5fcd4ab8-5bda-4c12-8c57-13208c47b774)
