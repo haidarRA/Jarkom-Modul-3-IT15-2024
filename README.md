@@ -655,3 +655,42 @@ hwaddress ether 22:5d:5c:a6:9e:8b
 ![Screenshot 2024-10-27 060859](https://github.com/user-attachments/assets/2c81547c-40b2-4142-807a-a76f35d13730)
 
 
+# No. 13
+> Karena mengetahui bahwa ada keturunan marley yang mewarisi kekuatan titan, Zeke pun berinisiatif untuk menyimpan data data penting di Warhammer, dan semua data tersebut harus dapat diakses oleh anak buah kesayangannya, Annie, Reiner, dan Berthold.  (13)
+
+pertama install mariadb server di warhammer untuk menyimpan data-data penting
+```
+#!/bin/bash
+
+apt-get update
+apt-get install mariadb-server -y
+service mysql start
+
+mysql -e "CREATE USER 'kelompokit15'@'%' IDENTIFIED BY 'passwordit15';"
+mysql -e "CREATE USER 'kelompokit15'@'eldia.it15.com' IDENTIFIED BY 'passwordit23';"
+mysql -e "CREATE DATABASE dbkelompokit15;"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'kelompokit15'@'%';"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'kelompokit23'@'eldia.it15.com';"
+mysql -e "FLUSH PRIVILEGES;"
+
+mysql="[mysqld]
+skip-networking=0
+skip-bind-address
+"
+echo "$mysql" > /etc/mysql/my.cnf
+
+service mysql restart
+```
+
+install maria clien di laravel worker
+```
+apt-get update
+apt-get install mariadb-client -y
+```
+
+setelah menginstal cobalah akses mariadb di laravel worker nya dengan perintah 
+```
+mariadb --host=10.71.3.4 --port=3306 --user=kelompokit15 --password
+```
+![Screenshot 2024-10-27 055859](https://github.com/user-attachments/assets/03895e4d-7c15-4b97-a4a1-6b959547bacf)
+
