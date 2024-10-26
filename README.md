@@ -1,4 +1,4 @@
-# Jarkom-Modul-3-IT15-2024
+![Screenshot 2024-10-27 045716](https://github.com/user-attachments/assets/6e1c020b-ba42-4c26-9266-a8b25af056f7)# Jarkom-Modul-3-IT15-2024
 
 ## ***KELOMPOK IT15***
 | Nama      | NRP         |
@@ -542,3 +542,37 @@ Setelah setup autentikasi pada load balancer Colossal, bisa mencoba untuk akses 
 ![image](https://github.com/user-attachments/assets/f818a674-aba8-4d39-9736-e3e7dd64c9b7)
 ![image](https://github.com/user-attachments/assets/30a112fa-5e17-4ca6-8245-398c7aec360f)
 ![image](https://github.com/user-attachments/assets/5fcd4ab8-5bda-4c12-8c57-13208c47b774)
+
+# No. 11
+Soal:
+> Lalu buat untuk setiap request yang mengandung /titan akan di proxy passing menuju halaman https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki (11) 
+hint: (proxy_pass) (11)
+
+jalankan script ini di load balancer colossal
+```
+echo 'upstream node {
+    server 10.71.2.2;
+    server 10.71.2.3;
+    server 10.71.2.4;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+        proxy_pass http://node;
+
+        auth_basic "Restricted Content";
+        auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+    }
+    location /titan {
+        rewrite ^/titan(.*)$ https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki/$1 permanent;
+    }
+}' > /etc/nginx/sites-available/eldia.it15.com
+
+service nginx restart
+```
+![Screenshot 2024-10-27 045716](https://github.com/user-attachments/assets/0f2b18db-a2b2-4ba9-b6db-de63ba2e5213)
+
+
