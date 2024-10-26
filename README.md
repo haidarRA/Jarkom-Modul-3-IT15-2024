@@ -575,4 +575,83 @@ service nginx restart
 ```
 ![Screenshot 2024-10-27 045716](https://github.com/user-attachments/assets/0f2b18db-a2b2-4ba9-b6db-de63ba2e5213)
 
+# No. 12
+> Selanjutnya Colossal ini hanya boleh diakses oleh client dengan IP [Prefix IP].1.77, [Prefix IP].1.88, [Prefix IP].2.144, dan [Prefix IP].2.156. (12) 
+hint: (fixed in dulu clientnya) (12)
+
+jalankan script ini untuk membuat client Zeke menggunakan ip address tetap
+```
+echo 'subnet 10.71.1.0 netmask 255.255.255.0 {
+    range 10.71.1.5 10.71.1.25;
+    range 10.71.1.50 10.71.1.100;
+    option routers 10.71.1.1;
+    option broadcast-address 10.71.1.255;
+    option domain-name-servers 10.71.4.2;
+    default-lease-time 1800;
+    max-lease-time 5220;
+}
+
+subnet 10.71.2.0 netmask 255.255.255.0 {
+    range 10.71.2.9 10.71.2.27;
+    range 10.71.2.81 10.71.2.243;
+    option routers 10.71.2.1;
+    option broadcast-address 10.71.2.255;
+    option domain-name-servers 10.71.4.2;
+    default-lease-time 360;
+    max-lease-time 5220;
+}
+
+subnet 10.71.4.0 netmask 255.255.255.0 {
+}
+host Zeke {
+    hardware ethernet 22:5d:5c:a6:9e:8b;
+    fixed-address 10.71.1.77;
+}' > /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server restart
+```
+jalankan script ini agar server hanya dapat di akses dengan ip address tertentu
+```
+echo 'upstream node {
+    server 10.71.2.2;
+    server 10.71.2.3;
+    server 10.71.2.4;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+	allow 10.71.1.77;
+        allow 10.71.1.88;
+        allow 10.71.2.144;
+        allow 10.71.2.156;
+        deny all;
+
+        proxy_pass http://node;
+
+        auth_basic "Restricted Content";
+        auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+    }
+    location /titan {
+        rewrite ^/titan(.*)$ https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki/$1 permanent;
+    }
+}' > /etc/nginx/sites-available/eldia.it15.com
+
+service nginx restart
+```
+
+dan yang terakhir jalankan script ini di client Zeke lalu restart Zeke
+```
+#!/bin/bash
+
+echo "auto eth0
+iface eth0 inet dhcp
+hwaddress ether 22:5d:5c:a6:9e:8b
+" > /etc/network/interfaces
+```
+![Screenshot 2024-10-27 060830](https://github.com/user-attachments/assets/ade6d7e1-e331-4116-979e-18864aa4b7ad)
+![Screenshot 2024-10-27 060859](https://github.com/user-attachments/assets/2c81547c-40b2-4142-807a-a76f35d13730)
+
 
