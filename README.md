@@ -1,4 +1,4 @@
-![Screenshot 2024-10-27 045716](https://github.com/user-attachments/assets/6e1c020b-ba42-4c26-9266-a8b25af056f7)# Jarkom-Modul-3-IT15-2024
+# Jarkom-Modul-3-IT15-2024
 
 ## ***KELOMPOK IT15***
 | Nama      | NRP         |
@@ -487,7 +487,7 @@ Untuk load testingnya sendiri dapat menggunakan command ```ab -n 1000 -c 75 http
 ![image](https://github.com/user-attachments/assets/317ff309-e7df-4389-bc24-1fa1121a38d4)
 
 ## Grafik
-![image](https://github.com/user-attachments/assets/59e2ca21-c878-4e08-8caf-33d8f0235b30)
+![image](https://github.com/user-attachments/assets/f397e8c2-2152-4212-bdda-f6787e545192)
 
 ## Analisis
 Dari hasil yang didapat, dapat disimpulkan bahwa algoritma load balancing IP Hash memiliki performa yang paling baik, diikuti oleh Generic Hash, Least Connection, dan Round Robin. Hal ini juga dilihat dari dari time per request dari tiap algoritma load balancing, di mana algoritma IP Hash memiliki time per request paling kecil yang artinya kecepatannya sangat tinggi.
@@ -509,6 +509,11 @@ Setelah mengubah jumlah worker pada load balancer, bisa dilakukan load testing d
 
 ## 1 Worker
 ![image](https://github.com/user-attachments/assets/100e9202-071d-47f0-b50f-e2829820c8d4)
+
+## Grafik
+![image](https://github.com/user-attachments/assets/14a49713-96c6-47c5-997f-6548b86cc5ab)
+
+Dari hasil yang didapat, dapat disimpulkan bahwa performa load balancer yang menggunakan 1 worker lebih baik dibandingkan dengan performa load balancer yang menggunakan 2 ataupun 3 worker. Hal ini karena time per request load balancer yang menggunakan 1 worker lebih cepat dibandingkan dengan 2 worker maupun 3 worker serta jumlah worker yang harus di-handle oleh load balancer lebih sedikit. Selain itu, dapat disimpulkan juga bahwa jumlah worker pada load balancer berbanding lurus dengan jumlah failed request. Semakin banyak worker pada load balancer, maka semakin tinggi jumlah failed request.
 
 # No. 10
 Soal:
