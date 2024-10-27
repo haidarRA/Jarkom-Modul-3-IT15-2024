@@ -486,6 +486,12 @@ Untuk load testingnya sendiri dapat menggunakan command ```ab -n 1000 -c 75 http
 ## 4. Generic Hash
 ![image](https://github.com/user-attachments/assets/317ff309-e7df-4389-bc24-1fa1121a38d4)
 
+## Grafik
+![image](https://github.com/user-attachments/assets/59e2ca21-c878-4e08-8caf-33d8f0235b30)
+
+## Analisis
+Dari hasil yang didapat, dapat disimpulkan bahwa algoritma load balancing IP Hash memiliki performa yang paling baik, diikuti oleh Generic Hash, Least Connection, dan Round Robin. Hal ini juga dilihat dari dari time per request dari tiap algoritma load balancing, di mana algoritma IP Hash memiliki time per request paling kecil yang artinya kecepatannya sangat tinggi.
+
 # No. 9
 Soal:
 > Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada “laporan kerja Armin”. (9)
